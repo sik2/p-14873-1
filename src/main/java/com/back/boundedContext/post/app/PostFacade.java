@@ -1,10 +1,9 @@
 package com.back.boundedContext.post.app;
 
-import com.back.boundedContext.member.domain.Member;
 import com.back.boundedContext.post.domain.Post;
 import com.back.boundedContext.post.domain.PostMember;
-import com.back.boundedContext.post.out.PostRepository;
 import com.back.boundedContext.post.out.PostMemberRepository;
+import com.back.boundedContext.post.out.PostRepository;
 import com.back.global.rsData.RsData;
 import com.back.shared.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public class PostFacade {
     }
 
     @Transactional
-    public RsData<Post> write(Member author, String title, String content) {
+    public RsData<Post> write(PostMember author, String title, String content) {
         return postWriteUseCase.write(author, title, content);
     }
 
@@ -48,5 +47,9 @@ public class PostFacade {
         );
 
         return postMemberRepository.save(_member);
+    }
+
+    public Optional<PostMember> findByUsername(String username) {
+        return postMemberRepository.findByUsername(username);
     }
 }

@@ -20,14 +20,17 @@ public class PostFacade {
     private final PostWriteUseCase postWriteUseCase;
     private final PostMemberRepository postMemberRepository;
 
+    @Transactional(readOnly = true)
     public long count() {
         return postRepository.count();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Post> findById(int id) {
         return postRepository.findById(id);
     }
 
+    @Transactional
     public RsData<Post> write(Member author, String title, String content) {
         return postWriteUseCase.write(author, title, content);
     }
@@ -35,14 +38,13 @@ public class PostFacade {
     @Transactional
     public PostMember syncMember(MemberDto member) {
         PostMember _member = new PostMember(
+                member.getId(),
+                member.getCreateDate(),
+                member.getModifyDate(),
                 member.getUsername(),
                 "",
                 member.getNickname()
         );
-
-        _member.setId(member.getId());
-        _member.setCreateDate(member.getCreateDate());
-        _member.setModifyDate(member.getModifyDate());
 
         return postMemberRepository.save(_member);
     }

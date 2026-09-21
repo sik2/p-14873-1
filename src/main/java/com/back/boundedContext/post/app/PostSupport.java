@@ -7,6 +7,7 @@ import com.back.boundedContext.post.out.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,4 +28,11 @@ public class PostSupport {
         return postMemberRepository.findByUsername(username);
     }
 
+    public List<Post> findAll() {
+        return postRepository.findAll();
+    }
+
+    public List<Post> findByOrderByIdDesc() {
+        return postRepository.findByOrderByIdDesc();
+    }
 }

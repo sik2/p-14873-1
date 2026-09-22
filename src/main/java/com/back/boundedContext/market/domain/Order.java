@@ -57,12 +57,27 @@ public class Order extends BaseIdAndTime {
         salePrice += product.getSalePrice();
     }
 
+
+    public OrderDto toDto() {
+        return new OrderDto(
+                getId(),
+                getCreateDate(),
+                getModifyDate(),
+                buyer.getId(),
+                buyer.getNickname(),
+                price,
+                salePrice,
+                requestPaymentDate,
+                paymentDate
+        );
+    }
+
     public void requestPayment(long pgPaymentAmount) {
         requestPaymentDate = LocalDateTime.now();
 
         publishEvent(
                 new MarketOrderPaymentRequestedEvent(
-                        new OrderDto(this),
+                        toDto(),
                         pgPaymentAmount
                 )
         );

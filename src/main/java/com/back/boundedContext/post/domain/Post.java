@@ -1,7 +1,7 @@
 package com.back.boundedContext.post.domain;
 
 import com.back.global.jpa.entity.BaseIdAndTime;
-import com.back.shared.post.dto.PostCommentDto;
+import com.back.shared.post.dto.PostDto;
 import com.back.shared.post.event.PostCommentCreatedEvent;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,6 +25,18 @@ public class Post extends BaseIdAndTime {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
+    public PostDto toDto() {
+        return new PostDto(
+                getId(),
+                getCreateDate(),
+                getModifyDate(),
+                author.getId(),
+                author.getNickname(),
+                title,
+                content
+        );
+    }
+
     @OneToMany(mappedBy = "post", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     private List<PostComment> comments = new ArrayList<>();
 
@@ -33,7 +45,7 @@ public class Post extends BaseIdAndTime {
 
         comments.add(postComment);
 
-       publishEvent(new PostCommentCreatedEvent(new PostCommentDto(postComment)));
+       publishEvent(new PostCommentCreatedEvent(postComment.toDto()));
 
         return postComment;
     }

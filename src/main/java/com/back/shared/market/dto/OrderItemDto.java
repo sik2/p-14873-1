@@ -27,6 +27,6 @@ public class OrderItemDto implements HasModelTypeCode {
 
     @Override
     public String getModelTypeCode() {
-        return "Order";
+        return "OrderItem";
     }
 }
